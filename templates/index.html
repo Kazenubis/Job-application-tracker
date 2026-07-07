@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Trail — Application Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-brand">
+    <span class="brand-mark">◆</span>
+    <span class="brand-name">Job Trail</span>
+  </div>
+  <div class="topbar-actions">
+    <button id="scrapeBtn" class="btn btn-ghost">
+      <span class="btn-label">Pull new listings</span>
+      <span class="btn-spinner" id="scrapeSpinner" hidden></span>
+    </button>
+    <button id="addBtn" class="btn btn-primary">+ New application</button>
+  </div>
+</header>
+
+<main class="layout">
+
+  <section class="board" aria-label="Application pipeline">
+    <div class="board-col" data-status="Applied">
+      <div class="col-head">
+        <span class="col-dot dot-applied"></span>
+        <h2>Applied</h2>
+        <span class="col-count" id="count-Applied">0</span>
+      </div>
+      <div class="col-body" id="col-Applied"></div>
+    </div>
+
+    <div class="board-col" data-status="Interview">
+      <div class="col-head">
+        <span class="col-dot dot-interview"></span>
+        <h2>Interview</h2>
+        <span class="col-count" id="count-Interview">0</span>
+      </div>
+      <div class="col-body" id="col-Interview"></div>
+    </div>
+
+    <div class="board-col" data-status="Offer">
+      <div class="col-head">
+        <span class="col-dot dot-offer"></span>
+        <h2>Offer</h2>
+        <span class="col-count" id="count-Offer">0</span>
+      </div>
+      <div class="col-body" id="col-Offer"></div>
+    </div>
+
+    <div class="board-col" data-status="Rejected">
+      <div class="col-head">
+        <span class="col-dot dot-rejected"></span>
+        <h2>Rejected</h2>
+        <span class="col-count" id="count-Rejected">0</span>
+      </div>
+      <div class="col-body" id="col-Rejected"></div>
+    </div>
+  </section>
+
+  <aside class="discover" aria-label="Discovered listings">
+    <div class="discover-head">
+      <h2>Discover</h2>
+      <p>Python roles pulled from RemoteOK</p>
+    </div>
+    <div class="discover-list" id="discoverList">
+      <p class="empty-hint">Click "Pull new listings" to fetch fresh Python roles.</p>
+    </div>
+  </aside>
+
+</main>
+
+<!-- Add / Edit application modal -->
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <h3 id="modalTitle">New application</h3>
+      <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+    </div>
+    <form id="appForm">
+      <input type="hidden" id="appId">
+
+      <label class="field">
+        <span>Company</span>
+        <input type="text" id="companyInput" required placeholder="e.g. Stripe">
+      </label>
+
+      <label class="field">
+        <span>Role</span>
+        <input type="text" id="roleInput" required placeholder="e.g. Junior Python Developer">
+      </label>
+
+      <label class="field">
+        <span>Status</span>
+        <select id="statusInput">
+          <option value="Applied">Applied</option>
+          <option value="Interview">Interview</option>
+          <option value="Offer">Offer</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Listing URL</span>
+        <input type="url" id="urlInput" placeholder="https://...">
+      </label>
+
+      <label class="field">
+        <span>Notes</span>
+        <textarea id="notesInput" rows="3" placeholder="Interviewer names, salary range, follow-up dates..."></textarea>
+      </label>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-danger" id="deleteBtn" hidden>Delete</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
